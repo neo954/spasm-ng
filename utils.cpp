@@ -693,28 +693,42 @@ char *get_file_contents (const char *filename) {
 	// find file size (Spencer says it's not a hack)
 	fseek (file, 0, SEEK_END);
 	size = ftell (file);
+
+	// don't panic if the file is empty
+	if (size == 0) {
+		read_size = 1;
+		size = 1;
+		buffer = (char*)  malloc (2);
+		buffer[0] = '\n';
+		goto finished_reading;
+	}
+
 	rewind (file);
 
 
 	// If there is a UTF-8 endian marker at the beginning of the file, skip it.
-	const unsigned char utf8_endian_mark[] = {0xEF, 0xBB, 0xBF};
-	bool matched = true;
-	for (unsigned i = 0; matched && i < sizeof(utf8_endian_mark); i++) {
-		int c = fgetc(file);
-		if (c == EOF) {
-			return NULL;
+	// Enclosed in braces to allow the goto to happen
+	{
+		const unsigned char utf8_endian_mark[] = {0xEF, 0xBB, 0xBF};
+		bool matched = true;
+		for (unsigned i = 0; matched && i < sizeof(utf8_endian_mark); i++) {
+			int c = fgetc(file);
+			if (c == EOF) {
+				return NULL;
+			}
+			matched &= (unsigned char)c == utf8_endian_mark[i];
 		}
-		matched &= (unsigned char)c == utf8_endian_mark[i];
-	}
-	if (matched) {
-		size -= sizeof(utf8_endian_mark);
-	} else {
-		rewind(file);
+		if (matched) {
+			size -= sizeof(utf8_endian_mark);
+		} else {
+			rewind(file);
+		}
 	}
 
 	// now allocate the memory and read in the contents
 	buffer = (char *) malloc (size + 1);
 	read_size = fread (buffer, 1, size, file);
+finished_reading:
 	fclose (file);
 
 	if (read_size != size) {
