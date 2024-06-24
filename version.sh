@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 getversion() {
 	if [ -f version_base.h ];then
 		VERSION=`cat version_base.h | head -n 1 | cut -f3 -d' ' | tr -d '"'`
