@@ -250,7 +250,7 @@ int CleanupSPASMErrorSession(int nSession)
 		{
 			pPrev->next = pList->next;
 		}
-		if(IsSPASMErrorFatal(lpErr->dwErrorCode)) {
+		if(IsSPASMErrorFatal(lpErr->dwErrorCode) && !lpErr->fIsWarning) {
 			fatalErrorCount++;
 		}
 		FreeErrorInstance(lpErr);
