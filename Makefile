@@ -84,7 +84,9 @@ debian: opt $(EXE)
 
 install:
 		mkdir -m 0755 -p $(DESTDIR)/bin
+		mkdir -m 0755 -p $(DESTDIR)/inc
 		install -m 0755 $(EXE) $(DESTDIR)/bin/$(EXE)
+		install -m 0644 inc/*.inc $(DESTDIR)/inc
 
 check: $(EXE)
 	$(PYTHON) tests/test-runner.py ./$(EXE)
