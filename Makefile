@@ -5,7 +5,7 @@ STRIP = $(CROSS_COMPILE)strip
 CXXFLAGS+= -Wall -DUSE_REUSABLES $(if $(ISWIN),,-DUNIXVER) -DUSE_BUILTIN_FCREATE
 LDFLAGS+= -lm
 
-DESTDIR ?= /usr/local
+DESTDIR ?= /opt/ti-devkit/spasm-ng
 
 ifdef FORCE_NO_GIT
 	FORCE_NO_GIT = 1
