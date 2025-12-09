@@ -81,7 +81,8 @@ debian: opt $(EXE)
 		rm -f description-pak
 
 install:
-		cp $(EXE) $(DESTDIR)/bin/$(EXE)
+		mkdir -m 0755 -p $(DESTDIR)/bin
+		install -m 0755 $(EXE) $(DESTDIR)/bin/$(EXE)
 
 check: $(EXE)
 	$(PYTHON) tests/test-runner.py ./$(EXE)
