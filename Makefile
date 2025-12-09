@@ -73,11 +73,13 @@ tar: opt-static
 # to make this work.
 debian: opt $(EXE)
 		echo "SPASM-ng is a z80 assembler with extra features to support development for TI calculators." > description-pak
+		umask 0022
 		checkinstall --requires "libgmp10, libssl3t64, libstdc++6, zlib1g, libzstd1" \
 			--pkgname="spasm-ng" --pkgversion="$(VERSION_DPKG)" --pkgrelease="1" \
 			--maintainer="alberthdev@users.noreply.github.com" \
 			--backup=no --deldoc=yes --deldesc=yes --delspec=yes \
-			--install=no --default $(CHECKINSTALL_OPTS)
+			--install=no --default $(CHECKINSTALL_OPTS) \
+			--umask=0022
 		rm -f description-pak
 
 install:
